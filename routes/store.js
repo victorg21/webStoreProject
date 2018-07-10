@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const session = require('express-session');
+//const session = require('express-session');
 const Inventory = require('../models/Inventory.js');
 
 /* GET users listing. */
@@ -23,9 +23,6 @@ router.get('/', function(req, res, next) {
 			'<html>\n' +
 			'<header>\n' +
 			' <script type="text/javascript">\n' +
-			'	function buy(){\n' +
-			'		location.href = "http://localhost:3000/cart";\n' +
-			'}\n' +
 			'</script>\n' +
 			'</header>\n' +
 			'<body>\n' +
@@ -37,14 +34,14 @@ router.get('/', function(req, res, next) {
 		for (let [productId, productObj] of products) {
 			//strMap.set(k, obj[k]);
 			res.write("<tr>");
-			res.write('<td>' +productId +'</td><td>' +productObj.name +'</td><td>' +productObj.price +'</td><td>' +inv.getQuantity(productId).quantity +'</td>');
+			res.write('<td>' +productId +'</td><td>' +productObj.name +'</td><td>' +productObj.price +'</td><td>' +Inventory.getQuantity(productId).quantity +'</td>');
 			res.write('<td width="100px;"></td>');
 			res.write('<td>' +
 				'<form style="display:inline-block;float:left;" method="POST" action="http://localhost:3000/cart" accept-charset="utf-8">\n' +
-				'<input type="hidden" name="productId"' +'value="' +productId +'" />' +
-				'<input type="hidden" name="productName"' +'value="' +productObj.name +'" />' +
-				'<input type="hidden" name="productPrice"' +'value="' +productObj.price +'" />' +
-				'<input type="hidden" name="productAmountLeft"' +'value="' +inv.getQuantity(productId).quantity +'" />' +
+				'<input type="hidden" name="productId" ' +'value="' +productId +'" />' +
+				'<input type="hidden" name="productName" ' +'value="' +productObj.name +'" />' +
+				'<input type="hidden" name="productPrice" ' +'value="' +productObj.price +'" />' +
+				'<input type="hidden" name="productAmountLeft"' +'value="' +Inventory.getQuantity(productId).quantity +'" />' +
 				'<input type="text" name="quantity"/>' +
 				'<button style="float:right;" type="submit">Add to cart</button>' +
 				'</form >\n' +

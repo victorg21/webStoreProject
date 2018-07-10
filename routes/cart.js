@@ -7,52 +7,6 @@ const ShoppingCartLine = require('../models/ShoppingCartLine.js');
 const Product = require('../models/Product.js');
 const session = require('express-session');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-	let shoppingCart;
-
-	if (!req.session.shoppingCart) {
-		shoppingCart = new ShoppingCart();
-		req.session.shoppingCart = shoppingCart;
-		//req.session.save();
-	}else{
-		shoppingCart = req.session.shoppingCart;
-		//let ttt = sss.getTotal();
-		console.log("shoppingCart=" +shoppingCart);
-	}
-	let pId = req.query.productId;
-	let pName = req.query.productName;
-	let pPrice = req.query.productPrice;
-	let pAmountLeft = req.query.productAmountLeft;
-	let pQuantity = req.query.quantity;
-	//for (var property in req.body) {Object.keys(req.body).length;
-	//Model[property] = req.body[property];
-	//console.log("property=" + property + " && req.body[property] = " + req.body[property]);
-	//let pNum = Object.keys(req.body[property]).length;
-	//res.write("property=" +property +" && req.body[property] = " +req.body[property]);
-	//}
-	console.log("pId="+pId +" pName=" +pName +" pPrice=" +pPrice);
-	let product = new Product(pId, pName, pPrice);
-	let shoppingCartLine = new ShoppingCartLine(product, pQuantity);
-	if(shoppingCart instanceof ShoppingCart){
-		console.log("sc= instanceof ssssssssss");
-		shoppingCart.addShoppingCartLine(shoppingCartLine);
-		req.session.shoppingCart = shoppingCart;
-		req.session.save();
-		res.write('<p>Total=' +shoppingCart.total +'</p>');
-		res.write('<p>Total=' +shoppingCart +'</p>');
-		res.write('<p><a href="http://localhost:3000/store">Return to Store</a></p>');
-		res.end();
-	}else{
-		console.log("wwwwwwwwwwwwwww");
-		//for (let [productId, productObj] of shoppingCart) {
-		console.log("shoppingCart=" +shoppingCart.name);
-		//}
-	}
-
-	res.end();
-});
-
 router.post('/', function(req, res, next) {
 	let shoppingCartObj = new ShoppingCart();
 
@@ -96,8 +50,8 @@ router.post('/', function(req, res, next) {
 			'<body>\n' +
 			'<h1>Shopping Cart list</h1>\n');
 
-		res.write('<p>Total=' + shoppingCartObj.total + '</p>');
-		res.write('<p><a href="http://localhost:3000/store">Return to Store</a></p>');
+		res.write('<p>Total price =' + shoppingCartObj.total + '</p>');
+		res.write('<p><a href="http://localhost:3000/store">Back to Store</a></p>');
 		res.write('<table border="1"><tr><th>Prodect Id</th><th>Quantity</th></tr> \n');
 
 		let jsonObjects = JSON.parse(jsonString);

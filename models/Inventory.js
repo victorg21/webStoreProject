@@ -30,7 +30,7 @@ class Inventory {
 
 	static setQuantity(id, quantity){
 		let invRow = Inventory.Inventory.get(id);
-		invRow.quantity = qRec.quantity + quantity;
+		invRow.quantity = invRow.quantity + quantity;
 	}
 }
 
