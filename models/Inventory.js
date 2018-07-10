@@ -2,14 +2,6 @@
 
 const Product = require('../models/Product.js');
 
-Inventory.Inventory = new Map([
-	['101', {quantity: 100}],
-	['102', {quantity: 100}],
-	['103', {quantity: 100}],
-	['104', {quantity: 100}],
-	['105', {quantity: 100}]
-]);
-
 class Inventory {
 	constructor() {
 		this._products = new Map([
@@ -41,5 +33,13 @@ class Inventory {
 		invRow.quantity = qRec.quantity + quantity;
 	}
 }
+
+Inventory.Inventory = new Map([
+	['101', {quantity: 100}],
+	['102', {quantity: 100}],
+	['103', {quantity: 100}],
+	['104', {quantity: 100}],
+	['105', {quantity: 100}]
+]);
 
 module.exports = Inventory;
