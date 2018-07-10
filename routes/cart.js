@@ -52,7 +52,7 @@ router.post('/', function(req, res, next) {
 
 		res.write('<p>Total price =' + shoppingCartObj.total + '</p>');
 		res.write('<p><a href="http://localhost:3000/store">Back to Store</a></p>');
-		res.write('<table border="1"><tr><th>Prodect Id</th><th>Quantity</th></tr> \n');
+		res.write('<table border="1"><tr><th>Prodect Id</th><th>Prodect Name</th><th>Quantity</th></tr> \n');
 
 		let jsonObjects = JSON.parse(jsonString);
 		for (let i = 0; i < jsonObjects.length; i++) {
@@ -60,10 +60,12 @@ router.post('/', function(req, res, next) {
 			for (let j = 0; j < jsonObj.length; j = j + 2) {
 				let pId = jsonObj[j];
 				let pCartLine = jsonObj[j + 1];
+				let pName = pCartLine["_product"]._name;
 				let quantity = pCartLine._quantity;
 				res.write('' +
 					'	<tr> \n' +
 					'		<td>' + pId + '</td> \n' +
+					'		<td>' + pName + '</td> \n' +
 					'		<td>' + quantity + '</td> \n' +
 					'	</tr> \n');
 			}
