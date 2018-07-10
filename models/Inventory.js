@@ -2,6 +2,14 @@
 
 const Product = require('../models/Product.js');
 
+Inventory.Inventory = new Map([
+	['101', {quantity: 100}],
+	['102', {quantity: 100}],
+	['103', {quantity: 100}],
+	['104', {quantity: 100}],
+	['105', {quantity: 100}]
+]);
+
 class Inventory {
 	constructor() {
 		this._products = new Map([
@@ -24,22 +32,14 @@ class Inventory {
 		return this.getProducts(id);
 	}
 
-	getQuantity(id){
+	static getQuantity(id){
 		return Inventory.Inventory.get(id);
 	}
 
 	static setQuantity(id, quantity){
-		let qRec = Inventory.Inventory.get(id);
-		qRec.quantity = qRec.quantity + quantity;
+		let invRow = Inventory.Inventory.get(id);
+		invRow.quantity = qRec.quantity + quantity;
 	}
 }
-
-Inventory.Inventory = new Map([
-	['101', {quantity: 100}],
-	['102', {quantity: 100}],
-	['103', {quantity: 100}],
-	['104', {quantity: 100}],
-	['105', {quantity: 100}]
-]);
 
 module.exports = Inventory;
