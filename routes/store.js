@@ -6,18 +6,16 @@ const Inventory = require('../models/Inventory.js');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
-		let inv = new Inventory();
-		res.header("Content-Type", "text/html; charset=utf-8");
+	res.header("Content-Type", "text/html; charset=utf-8");
+	
+	let inventory = new Inventory();
+	renderStore(res, inventory);
 
-		//res.write('<div><span>id: ' + req.session.id + '</span>')
-		//res.write('<span> expires in: ' + (req.session.cookie.maxAge / 1000) + 's</span></div>')
-		renderStore(res, inv);
-
-		res.end()
+	res.end()
 
 
-	function renderStore(res, inv){
-		let products = inv.products;
+	function renderStore(res, inventory){
+		let products = inventory.products;
 
 		res.write('<!DOCTYPE html>\n' +
 			'<html>\n' +
@@ -34,14 +32,14 @@ router.get('/', function(req, res, next) {
 		for (let [productId, productObj] of products) {
 			//strMap.set(k, obj[k]);
 			res.write("<tr>");
-			res.write('<td>' +productId +'</td><td>' +productObj.name +'</td><td>' +productObj.price +'</td><td>' +Inventory.getQuantity(productId).quantity +'</td>');
+			res.write('<td>' +productId +'</td><td>' +productObj.name +'</td><td>' +productObj.price +'</td><td>' +inventory.getQuantity(productId).quantity +'</td>');
 			res.write('<td width="100px;"></td>');
 			res.write('<td>' +
 				'<form style="display:inline-block;float:left;" method="POST" action="http://localhost:3000/cart" accept-charset="utf-8">\n' +
 				'<input type="hidden" name="productId" ' +'value="' +productId +'" />' +
 				'<input type="hidden" name="productName" ' +'value="' +productObj.name +'" />' +
 				'<input type="hidden" name="productPrice" ' +'value="' +productObj.price +'" />' +
-				'<input type="hidden" name="productAmountLeft"' +'value="' +Inventory.getQuantity(productId).quantity +'" />' +
+				'<input type="hidden" name="productAmountLeft"' +'value="' +inventory.getQuantity(productId).quantity +'" />' +
 				'<input type="text" name="quantity"/>' +
 				'<button style="float:right;" type="submit">Add to cart</button>' +
 				'</form >\n' +
