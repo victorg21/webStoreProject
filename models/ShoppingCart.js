@@ -6,21 +6,37 @@ const ShoppingCartLine = require('../models/ShoppingCartLine.js');
 class ShoppingCart {
 	constructor() {
 		this.lines = new Map();
-		this._name = "victor";
+	}
+
+	addProduct(product, quantity){
+		let productId = product.id;
+		if(productId in this.lines){
+			let inCartLine = this.lines.get(productId);
+			let inQuantity = inCartLine.quantity;
+			let newQuantity = parseInt(inQuantity) + parseInt(cartLine.quantity);
+			cartLine.quantity = newQuantity;
+			this.lines.set(productId, cartLine);
+		}else{
+			this.lines.set(productId, cartLine);
+		}
 	}
 
 	addShoppingCartLine(cartLine) {
 		let product = cartLine.product;
-		let pId = product.id;
-		if(this.lines.has(pId)){
-			let inCartLine = this.lines.get(pId);
+		let productId = product.id;
+		if(productId in this.lines){
+			let inCartLine = this.lines.get(productId);
 			let inQuantity = inCartLine.quantity;
 			let newQuantity = parseInt(inQuantity) + parseInt(cartLine.quantity);
 			cartLine.quantity = newQuantity;
-			this.lines.set(pId, cartLine);
+			this.lines.set(productId, cartLine);
 		}else{
-			this.lines.set(pId, cartLine);
+			this.lines.set(productId, cartLine);
 		}
+	}
+
+	getLines(){
+		return this.lines;
 	}
 
 	get total(){
@@ -31,14 +47,6 @@ class ShoppingCart {
 			total += parseFloat(product._price) * parseInt(quantity);
 		}
 		return total;
-	}
-
-	get name() {
-		return this._name;
-	}
-
-	set name(value) {
-		this._name = value;
 	}
 
 	toJson(){
