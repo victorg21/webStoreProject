@@ -7,7 +7,6 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var storeRouter = require('./routes/store');
 var cartRouter = require('./routes/cart');
 
@@ -26,13 +25,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
 	secret: 'keyboard cat',
-	cookie: { maxAge: 60000, secure: false },
-	resave: true,
+	cookie: { maxAge: 100000, secure: false },
+	resave: false,
 	saveUninitialized: true
 }))
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/store', storeRouter);
 app.use('/cart', cartRouter);
 
