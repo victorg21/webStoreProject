@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 
 
 	function renderStore(res, inventory){
-		let products = inventory.products;
+		let products = inventory.inventory;
 
 		res.write('<!DOCTYPE html>\n' +
 			'<html>\n' +
@@ -29,17 +29,17 @@ router.get('/', function(req, res, next) {
 			'<tr><th>id</th><th>name</th><th>Price</th><th>left</th><th></th><th>quantity</th></tr>\n'
 		);
 
-		for (let [productId, productObj] of products) {
+		for (let [productId, productLine] of products) {
 			//strMap.set(k, obj[k]);
 			res.write("<tr>");
-			res.write('<td>' +productId +'</td><td>' +productObj.name +'</td><td>' +productObj.price +'</td><td>' +inventory.getQuantity(productId).quantity +'</td>');
+			res.write('<td>' +productId +'</td><td>' +productLine.product.name +'</td><td>' +productLine.product.price +'</td><td>' +productLine.quantity +'</td>');
 			res.write('<td width="100px;"></td>');
 			res.write('<td>' +
 				'<form style="display:inline-block;float:left;" method="POST" action="http://localhost:3000/cart" accept-charset="utf-8">\n' +
 				'<input type="hidden" name="productId" ' +'value="' +productId +'" />' +
-				'<input type="hidden" name="productName" ' +'value="' +productObj.name +'" />' +
-				'<input type="hidden" name="productPrice" ' +'value="' +productObj.price +'" />' +
-				'<input type="hidden" name="productAmountLeft"' +'value="' +inventory.getQuantity(productId).quantity +'" />' +
+				'<input type="hidden" name="productName" ' +'value="' +productLine.product.name +'" />' +
+				'<input type="hidden" name="productPrice" ' +'value="' +productLine.product.price +'" />' +
+				'<input type="hidden" name="productAmountLeft"' +'value="' +productLine.quantity +'" />' +
 				'<input type="text" name="quantity"/>' +
 				'<button style="float:right;" type="submit">Add to cart</button>' +
 				'</form >\n' +

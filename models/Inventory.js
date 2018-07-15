@@ -6,20 +6,12 @@ let _instance = null;
 class Inventory {
 	constructor() {
 		if(!_instance) {
-			this._products = new Map([
-				['101', new Product('101', 'p1', 20)],
-				['102', new Product('102', 'p2', 20)],
-				['103', new Product('103', 'p3', 20)],
-				['104', new Product('104', 'p4', 20)],
-				['105', new Product('105', 'p5', 20)]
-			]);
-
 			this._inventory = new Map([
-				['101', {quantity: 100}],
-				['102', {quantity: 100}],
-				['103', {quantity: 100}],
-				['104', {quantity: 100}],
-				['105', {quantity: 100}]
+				['101', {product: new Product('101', 'p1', 20), quantity: 100}],
+				['102', {product: new Product('102', 'p2', 20), quantity: 100}],
+				['103', {product: new Product('103', 'p3', 20), quantity: 100}],
+				['104', {product: new Product('104', 'p4', 20), quantity: 100}],
+				['105', {product: new Product('105', 'p5', 20), quantity: 100}]
 			]);
 
 			_instance = this;
@@ -27,23 +19,23 @@ class Inventory {
 		return _instance;
 	}
 
-	getInventory(){
+	get inventory(){
 		return this._inventory;
 	}
-
+/*
 	get products() {
 		return this._products;
 	}
 	set products(value) {
 		this._products = value;
 	}
-
+*/
 	getProduct(productId) {
-		return this.getProducts(productId);
+		return this._inventory.get(productId).product;
 	}
 
 	getQuantity(productId){
-		return this._inventory.get(productId);
+		return this._inventory.get(productId).quantity;
 	}
 
 	setQuantity(productId, quantity){
