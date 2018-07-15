@@ -2,6 +2,7 @@
 
 const Product = require('../models/Product.js');
 let _instance = null;
+
 class Inventory {
 	constructor() {
 		if(!_instance) {

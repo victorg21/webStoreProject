@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const session = require('express-session');
-//const bodyParser = require("body-parser");
 
+const session = require('express-session');
 const Inventory = require('../models/Inventory.js');
 const Users = require('../models/Users.js');
 const ShoppingCart = require('../models/ShoppingCart.js');
@@ -11,12 +10,6 @@ const Product = require('../models/Product.js');
 
 router.post('/', function(req, res, next) {
 	if (req.session.id) {
-		let userId = req.session.id;
-		let users = new Users();
-		let shoppingCartObj = users.getShoppingCart(userId);
-		console.log("userId=" +userId, " shoppingCartObj=" +shoppingCartObj);
-
-
 		let pId = req.body["productId"];
 		let pName = req.body["productName"];
 		let pPrice = req.body["productPrice"];
@@ -26,17 +19,18 @@ router.post('/', function(req, res, next) {
 		console.log("pId=" + pId + " pName=" + pName + " pPrice=" + pPrice + " pQuantity=" + pQuantity);
 		let product = new Product(pId, pName, pPrice);
 		let shoppingCartLine = new ShoppingCartLine(product, pQuantity);
-		shoppingCartObj.addShoppingCartLine(shoppingCartLine);
 
-		//let jsonString = shoppingCartObj.toJson();
-		//console.log("jsonString = " +jsonString);
-		//req.session.sessionId = jsonString;
-		//req.session.save();
+		let userId = req.session.id;
+		let users = new Users();
+		let shoppingCartObj = users.getShoppingCart(userId);
+		console.log("userId=" +userId, " shoppingCartObj=" +shoppingCartObj);
+
+		shoppingCartObj.addShoppingCartLine(shoppingCartLine);
+		users.addShoppingCart(userId, shoppingCartObj);
 
 		let inventory = new Inventory();
-		//console.log("inv = " + inv);
 		inventory.setQuantity(pId, (parseInt(pQuantity) * -1));
-		console.log("Inventory.sInventory = " + inventory.getInventory());
+		//console.log("Inventory.sInventory = " + inventory.getInventory());
 
 		renderCart(res, shoppingCartObj);
 	}
@@ -57,9 +51,7 @@ router.post('/', function(req, res, next) {
 		res.write('<table border="1"><tr><th>Prodect Id</th><th>Prodect Name</th><th>Quantity</th></tr> \n');
 
 		let lines = shoppingCartObj.getLines();
-		//Object.keys(lines).forEach(function(productId) {
 		for (let [productId, shoppingCartLine] of lines) {
-			//let shoppingCartLine = lines[productId];
 			let pName = shoppingCartLine["_product"]._name;
 			let quantity = shoppingCartLine._quantity;
 			res.write('' +
@@ -70,24 +62,6 @@ router.post('/', function(req, res, next) {
 				'	</tr> \n');
 		};
 
-/*
-		let jsonObjects = JSON.parse(jsonString);
-		for (let i = 0; i < jsonObjects.length; i++) {
-			let jsonObj = jsonObjects[i];
-			for (let j = 0; j < jsonObj.length; j = j + 2) {
-				let pId = jsonObj[j];
-				let pCartLine = jsonObj[j + 1];
-				let pName = pCartLine["_product"]._name;
-				let quantity = pCartLine._quantity;
-				res.write('' +
-					'	<tr> \n' +
-					'		<td>' + pId + '</td> \n' +
-					'		<td>' + pName + '</td> \n' +
-					'		<td>' + quantity + '</td> \n' +
-					'	</tr> \n');
-			}
-		}
-*/
 		res.write('</table> \n');
 		res.write('</body></html>');
 	}
