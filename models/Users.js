@@ -13,11 +13,11 @@ class Users {
 	}
 
 	addShoppingCart(userId, shoppingCart) {
-		this.shoppingCarts.set(userId, shoppingCart);
+		this._shoppingCarts.set(userId, shoppingCart);
 	}
 
 	getShoppingCart(userId){
-		if(userId in this._shoppingCarts){
+		if(this._shoppingCarts.has(userId)){
 			return this._shoppingCarts.get(userId);
 		}else{
 			//Add new shoppingCart into map
